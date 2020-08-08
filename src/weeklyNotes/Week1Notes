@@ -1,0 +1,124 @@
+Intro to JSX
+
+JSX = syntactic extension to javascript created to help write front-end code faster. Synactic sugar, or a preprocessor for javascript. Similar to Sass for CSS.
+
+write code as JSX, then gets complied into regular javascript so that it can be read by the browser.
+
+JSX example: <div>Hello!</div>
+
+without JSX: React.createElement("div", null, "Hello World!")
+
+differences between HTML and JSX
+--------------------------------
+
+className instead of class, htmlFor instead of for, this is because class and for already are hard programmed into javascript.
+
+embed javascipt expressions via {}
+
+an element with no content, it can have a self closing tag <   />
+example:    <i className = "fa fa-phone"></i>
+            <i className = "fa fa-phone" />
+
+
+react components use Cap first, jsx syntax starts with a lowercase.
+Example: ComponentBlue vs ComponentBlue
+
+
+
+Javascript import / export
+--------------------------
+
+import, export keywords allow data to be shared via javascript.
+
+shared data can be in the form of objects, primitives, and functions (including classes)
+classes are syntactic sugar for functions.
+
+two kinds of exports: named and default.
+one file can have many named export, but only one default export.
+
+having an export in the js file for react makes it a module in react. 
+
+example:    export default App; = default export
+            export { app }; = named export
+
+must use the {exact name} when refering to the module.
+
+
+React Components
+----------------
+
+react components are repeatable blocks of code, define with one syntax then call it with another syntax.
+
+call the component via render()
+
+how to define react components:
+two ways, functional component and class component
+
+create class component
+
+example: class App extends Component {}
+
+class Name of Component extends Component // creating a child class of component
+
+react component will always have a return statement.
+for class components there also will be a render()
+
+for example:
+class App extends Component {
+    render() // must
+        return ( //must
+            //must return a single react element.
+            <div className="App"> // divs are considering one element, anything inside of it is consider a child of the div element.
+                <h1>
+            </div>
+        )
+}
+
+Why are components useful?
+
+easily composed user interfact in a modular way, allows for quick implementation. 
+
+
+
+State and prop 
+--------------
+//props is a read only variable.
+//passing props through a child to a parent.
+
+class ExampleParentComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            number: 333
+        }
+        render() {
+            return <ExampleChildComponent number={this.state.number}>
+        }
+    }
+}
+
+class ExampleChildComponent extends Component {
+    render() {
+        return <div>{this.props.number}</div>
+    }
+}
+
+when thinking about designing a react app, one of the main rules is to figure out which component should store state data.
+
+lifting state up, is shifting the state data to the top of the hierachy in order to pass it down to the children components.
+
+class Directory extends Component {
+  //constructor method not required unless for certain cases.
+  constructor(props) {
+    //props is an important keyword, must use argument if constructor is created.
+    super(props);
+    //this is a required constructor setup in react.
+    this.state = {};
+    //state property is for react only and always must hold an object.
+  }
+
+  IMPORTANT!! DO NOT UPDATE THE STATE DIRECTLY
+
+    onCampsiteSelect(campsite) {
+    this.setState({ selectedCampsite: campsite }); //always use setState to update the state.
+  }

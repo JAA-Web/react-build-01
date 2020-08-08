@@ -1,0 +1,175 @@
+//to install react npx create-react-app, npx use commands one time vs npm start
+//Reactstrap = bootstrap component of react
+
+
+//Parent component > child component example:
+    Parent component
+
+    Siblings // Child Component / Child Component
+//
+
+
+//must have to always import our data scoures.
+    import React from "react";
+//
+
+
+// Container vs presentation components:
+    container component: have a state and pass data into presentation components
+
+    presentation component: only meant to "present" items to the user.
+
+//
+
+
+//{Javascript}
+    curly brackets allow you use to javascript expressions into jsx.
+//
+
+
+//Named exports usage and syntax
+
+    named export needs to be wrapped in {}, the reason for named exports is if there are other components inside one file we can export seperate components.
+
+//
+
+
+//module is a bundled piece of code that can be imported somewhere else.
+
+//
+
+
+
+//class component build
+    class App extends React.Component {}
+
+    or 
+
+    import React, { Components } from 'react';
+
+//
+
+//fragment React tags
+
+    <> </>fragment = null component will not go into the dom
+    <> 
+        <Header title="Amazon" color="blue"/> //passing in properties into components, this is considering rendering a component. Header (props)
+    </>
+
+    const props = {
+        title: "amazon",
+        color: "blue",
+    };
+
+//
+
+
+
+//use .css to add styles globally
+//Class component - responsible to maintain with the state
+//Functional Component - not responsible to maintaining the state
+
+
+/// parent App.js
+
+import React from 'react';
+import Main from './components/Main';
+
+function App (
+    return (
+        <Header />
+        <Main />
+    )
+)
+
+
+
+
+//container component Main.js
+//linked to App.js 
+//class component
+
+import React, {Component} from 'react';
+import Header from './layout/Header";
+import Card 
+
+class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = [
+            //this is considered "State Object", this is consider proper usage, and best practices.
+            //this is where we keep our data for our applications
+            //this build is called an Array of Objects
+            {
+            id: 1,
+            title: "Spider Man",
+            color: "red",
+            },
+            
+            {
+            id: 2,
+            title: "Batman",
+            color: "black",
+            },
+
+            {
+            id: 3,
+            title: "Superman",
+            color: "blue",
+            },
+
+
+
+        ];
+
+        render() {
+            return (
+                <>
+                <Header title="Amazon" backgroundColor="blue" color="white"/>
+                <div className="card-container">
+                    {this.state.map(item) => ( <Card id={item.id} title={item.title} color={item.color}} />
+                </div>
+                </>
+            )
+        }
+    }
+}
+
+export default Main;
+
+
+
+//child component Header.js
+//linked to App.js
+
+const Header = (props) => {
+  return (
+    <header> //<headers are good to keep SEO
+        <h2 style={{ backgroundColor: props.color }}>{Amazon}</h2> 
+        // {{backgroundColor: props.color}}, a way to correctly dynamically create backgrounds.
+        //to pass in an object we must use {{ object data }}
+        //passing in mutliple properties {{ backgroundColor: props.color, color: "yellow" fontsize:"20px" padding:'20px'}}
+    </header>
+  );
+};
+
+
+//child presentation component Card.js
+//linkd to Main.js
+
+import 'React' from 'react';
+
+const Card = (props) => {
+    return (
+        <div className="card">
+        //className is best practice when we want to give an element a class. 
+
+            <div className="imageArea"> Image area </div>
+            <div style{{backgroundColor: props.color}}>
+                <h3 className="title">{props.title}</h3>
+            </div>
+        </div>
+    )
+};
+
+export default Card;
