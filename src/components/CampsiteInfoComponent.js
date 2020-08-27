@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -25,9 +26,9 @@ class CommentForm extends Component {
 
     this.state = {
       modal: false,
-      rating: " ",
-      yourName: " ",
-      comment: " ",
+      //      rating: " ",
+      //      yourName: " ",
+      //      comment: " ",
       touched: {
         yourName: false,
       },
@@ -38,9 +39,15 @@ class CommentForm extends Component {
     this.setState({ modal: !this.state.modal });
   };
 
-  handleSubmit = (values) => {
-    alert(JSON.stringify(values));
-  };
+  handleSubmit(values) {
+    this.toggleModal();
+    this.props.addComment(
+      this.props.campsiteId,
+      values.rating,
+      values.yourName,
+      values.text
+    );
+  }
 
   render() {
     return (
@@ -103,13 +110,13 @@ class CommentForm extends Component {
               </div>
 
               <div className="form-group">
-                <Label htmlFor="comment" md={6}>
+                <Label htmlFor="text" md={6}>
                   Comment
                 </Label>
                 <Control.textarea
-                  model=".comment"
-                  id="comment"
-                  name="comment"
+                  model=".text"
+                  id="text"
+                  name="text"
                   className="form-control"
                   rows="6"
                 ></Control.textarea>
@@ -139,17 +146,16 @@ function RenderCampsite({ campsite }) {
   );
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, campsiteId }) {
   if (comments) {
     return (
       <div className="col-md-5 m-1">
         <h4>Comments</h4>
-        {/* start of the map(), pulling the object array from campsites.js and navigating to comments, map will build an array following the comments. then we pull the infomation into there own variable to which we can use.*/}
         {comments.map((comment) => (
           <div key={comment.id}>
             <p>{comment.text}</p>
             <p>
-              {comment.author} --{" "}
+              {comment.yourName} --{" "}
               {new Intl.DateTimeFormat("en-US", {
                 year: "numeric",
                 month: "short",
@@ -158,7 +164,7 @@ function RenderComments({ comments }) {
             </p>
           </div>
         ))}
-        <CommentForm />
+        <CommentForm campsiteId={campsiteId} addComment={addComment} />
       </div>
     );
   }
@@ -166,6 +172,28 @@ function RenderComments({ comments }) {
 }
 
 function CampsiteInfo(props) {
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+
+  if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <h4>{props.errMess}</h4>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (props.campsite) {
     return (
       <div className="container">
@@ -183,7 +211,11 @@ function CampsiteInfo(props) {
         </div>
         <div className="row">
           <RenderCampsite campsite={props.campsite} />
-          <RenderComments comments={props.comments} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            campsiteId={props.campsite.id}
+          />
         </div>
       </div>
     );
